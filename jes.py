@@ -11,10 +11,14 @@ from botorch.utils.transforms import normalize, unnormalize
 from jes.utils.bo_loop import bo_loop
 from problems import RE, WOSGZ, ZDT
 
+import os
+path = os.getcwd()
+
 d = 30
 M = 2
 n = min(60, 6 * d)
-n_iteration = 3
+n_iteration = 2
+run_id = 1
 
 for i in range(1, 9):
     problem = WOSGZ(id=i, dim=d, num_objectives=M, negate=True)
@@ -26,7 +30,7 @@ for i in range(1, 9):
     train_Y = problem(train_X)
 
     hv_exact = []
-    for i in range(n_iteration):
+    for j in range(n_iteration):
         x = bo_loop(
             train_X=normalize(train_X, bounds),
             train_Y=train_Y,
@@ -80,4 +84,7 @@ for i in range(1, 9):
             "Hypervolume_indicator",
         ],
     )
-    df.to_csv(f"{problem.__class__.__name__}{i}.csv")
+    rst_path = path + '/nips_jes_results/' + problem.__class__.__name__.lower() + str(i) + '/default/' + 'jes/'
+    os.makedirs(rst_path, exist_ok=True) 
+    df.to_csv(rst_path + str(run_id) + '.csv')
+           
