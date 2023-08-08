@@ -29,7 +29,7 @@ run_id = int(sys.argv[2])
 
 i = problem_id 
 for i in range(problem_id, problem_id+1):
-    problem = WOSGZ(id=i, dim=d, num_objectives=M, negate=True)
+    problem = ZDT(id=i, dim=d, num_objectives=M, negate=True)
     bounds = problem.bounds
     standard_bounds = torch.zeros(2, d)
     standard_bounds[1] = 1.0
